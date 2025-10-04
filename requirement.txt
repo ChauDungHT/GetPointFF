@@ -1,0 +1,6 @@
+selenium 
+webdriver-manager 
+browser-cookie3 
+python-dotenv 
+beautifulsoup4
+pandas

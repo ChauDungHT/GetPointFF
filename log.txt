@@ -1,0 +1,37 @@
+[24/9/2025-0:00]:
+1. Đã xong
+- Đã hoàn thành lấy thông tin từ web
+2. Cần làm
+- Sửa hàm getInfo() để nhận thông tin nhập từ bàn phím
+- Có thể thay list tìm kiếm find_elements bằng cách .send_keys(Keys.TAB)
+
+[24/9/2025-10:47]:
+1. Đã xong
+- Hàm searchMatch() đã hoàn thành lấy id
+2. Cần làm
+- Dựa vào id để lấy thông tin trận đấu
+- Dùng TAB hay id để điều hướng?
+
+[25/9/2025-9:05]:
+1. Đã xong
+- Đã có thể lấy thông tin trận đấu
+2. Cần làm
+- Hàm parse_match_info() chưa hoàn thiện
+- Lấy thông tin từ bàn phím
+
+[25/9/2025-10:48]:
+1. Đã xong
+- Đã hoàn thành hàm parse_match_info()
+- Đổi hàm parse_match_info() thành matchInfo()
+2. Cần làm
+- Hàm matchInfo() đang lấy nửa đầu ván (n-1) ghép nửa sau ván (n)
+- Format lại tên hàm
+- Tìm cách lưu dữ liệu ra file
+
+[28/9/2025-0:20]:
+1. Đã xong
+- 0
+2. Cần làm
+- Chưa lấy được Player
+- Lấy các game cuối bị sai
+- Code rườm ra
