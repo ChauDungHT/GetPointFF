@@ -35,3 +35,17 @@
 - Chưa lấy được Player
 - Lấy các game cuối bị sai
 - Code rườm ra
+
+[08/10/2025-15:30]:
+1. Đã xong
+- 0
+2. Cần làm
+- Chưa lấy được Player
+- Lấy các game cuối bị sai
+{
+    Hint: Chia Rank, Team, Elim, Point ra thành các list riêng biệt rồi ghép lại.
+    Hint: Mỗi list sẽ được xử lý theo tầng. 
+        Tầng 1: Lấy tất cả các list
+        Tầng 2: Xử lí từng list riêng biệt
+        Tầng 3: Ghép các list lại với nhau
+}

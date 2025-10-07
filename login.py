@@ -52,9 +52,9 @@ def cookiejar_to_selenium(driver: WebDriver, cj: CookieJar, current_domain: str)
     print("Hoàn tất chuyển cookie.")
 
 def getInfo():
-    id = 1706006843
-    start = "21/09/2025 13:30"
-    end = "22/09/2025 00:00"
+    id = 7138032972
+    start = "07/10/2025 21:40"
+    end = "08/10/2025 00:00"
     return id, start, end
 
 def connectWeb():
@@ -136,10 +136,10 @@ def getMacth(driver: WebDriver):
         for i, _ in enumerate(spans, start=1):
             if i <= len(spans):
                 match_info = matchInfo(driver, str(spans[i-1].text))
-                data = match_info
-                df = pd.DataFrame(data)
+                #data = match_info
+                #df = pd.DataFrame(data)
                 # df["player"] = df["player"].apply(lambda x: " - ".join(x))
-                print(df.to_string(index=False))
+                #print(df.to_string(index=False))
             else:
                 break
         print("Done.")
@@ -154,25 +154,28 @@ def matchInfo(driver: WebDriver, match_id: str):
     # Danh sách team/Rank
     ranks = row.find_elements(By.XPATH, ".//div[contains(@class,'no-border')]//span")
     results = []
-    for i, _ in enumerate(ranks, start=1):
-        top = f"Top {i}"
+    for i in range(len(ranks)):
+        #top = f"Top {i}"
         # Lấy tên/ID người chơi trong team thứ i
         players = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='col-5']//span[not(contains(@style,'visibility: hidden'))]")))
-        player = players[i].text
+        for i1 in range(len(players)):
+            player = players[i1].text
+            print(f"{i1+1}: {player}")
+            i1+=1
         # player = [p.strip() for p in player_text.split(" - ")]
 
         # Lấy Elim và Point cho team thứ i
-        if (i < len(ranks)):
-            elim = row.find_elements(By.XPATH, ".//div[@class='col-2']")[2*(i+1) - 1].text 
-            point = row.find_elements(By.XPATH, ".//div[@class='col-2']")[2*(i+1)].text
-        else:
-            ""
+        #if (i < len(ranks)):
+        #    elim = row.find_elements(By.XPATH, ".//div[@class='col-2']")
+        #    point = row.find_elements(By.XPATH, ".//div[@class='col-2']")
+        #else:
+        #    ""
         results.append({
             "match_id": match_id,
-            "rank": top,
-            "player": player,
-            "elim": elim,
-            "point": point
+            #"rank": top,
+            #"player": player,
+            #"elim": elim,
+            #"point": point
         })
     return results
 
