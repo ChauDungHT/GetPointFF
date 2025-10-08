@@ -52,7 +52,7 @@ def cookiejar_to_selenium(driver: WebDriver, cj: CookieJar, current_domain: str)
     print("Hoàn tất chuyển cookie.")
 
 def getInfo():
-    id = 7138032972
+    id = 375051811
     start = "07/10/2025 21:40"
     end = "08/10/2025 00:00"
     return id, start, end

@@ -36,7 +36,7 @@
 - Lấy các game cuối bị sai
 - Code rườm ra
 
-[08/10/2025-15:30]:
+[08/10/2025-00:30]:
 1. Đã xong
 - 0
 2. Cần làm
@@ -49,3 +49,10 @@
         Tầng 2: Xử lí từng list riêng biệt
         Tầng 3: Ghép các list lại với nhau
 }
+
+[08/10/2025-10:30]:
+1. Đã xong
+- Lấy Top ok
+2. Cần làm
+- Player.text lỗi ở chỗ nào?
+- ranks[i].text lỗi ở chỗ nào?
