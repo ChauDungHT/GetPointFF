@@ -56,3 +56,9 @@
 2. Cần làm
 - Player.text lỗi ở chỗ nào?
 - ranks[i].text lỗi ở chỗ nào?
+
+[08/10/2025-14:30]:
+1. Đã xong
+- đã lấy thành công Top, Player, Elim, Point, xây dựng ở testPlayer
+2. Cần làm
+- Đến công đoạn bóc tách OuterHTML, phân chia các danh mục
