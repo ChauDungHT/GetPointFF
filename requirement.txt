@@ -4,3 +4,5 @@ browser-cookie3
 python-dotenv 
 beautifulsoup4
 pandas
+re
+time

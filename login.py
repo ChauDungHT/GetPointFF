@@ -7,10 +7,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
-import time
 import sys
 from http.cookiejar import CookieJar, Cookie
-import pandas as pd
+import re
 
 
 def parse_date_time(date_time_str):
@@ -149,33 +148,32 @@ def matchInfo(driver: WebDriver, match_id: str):
     # Tìm thẻ <a> chứa match_id
     match_link = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, f"//a[text()='{match_id}']")))
     match_link.click()
-    match_container = match_link.find_element(By.XPATH, "./ancestor::div[@class='col-3 match']")
-    row = match_container.find_element(By.XPATH, "./ancestor::div[@class='row']")
-    # Danh sách team/Rank
-    ranks = row.find_elements(By.XPATH, ".//div[contains(@class,'no-border')]//span")
-    results = []
-    for i in range(len(ranks)):
-        #top = f"Top {i}"
-        # Lấy tên/ID người chơi trong team thứ i
-        players = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//div[@class='col-5']//span[not(contains(@style,'visibility: hidden'))]")))
-        for i1 in range(len(players)):
-            player = players[i1].text
-            print(f"{i1+1}: {player}")
-            i1+=1
-        # player = [p.strip() for p in player_text.split(" - ")]
+    elements = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "/html/body/div/section/div/div/div/div/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div")))
 
-        # Lấy Elim và Point cho team thứ i
-        #if (i < len(ranks)):
-        #    elim = row.find_elements(By.XPATH, ".//div[@class='col-2']")
-        #    point = row.find_elements(By.XPATH, ".//div[@class='col-2']")
-        #else:
-        #    ""
+    print(f"Tìm thấy {len(elements)} phần tử.")
+    for i, el in enumerate(elements, start=1):
+        p = el.get_attribute('outerHTML')
+        pattern = re.compile(
+            r'<span>(Top\s*\d+)</span>.*?'
+            r'<span style="margin: 0px 50px;">(.*?)</span>'
+            r'<span style="margin: 0px 50px;">(.*?)</span>.*?'
+            r'<div class="col-1">(\d+)</div>'
+            r'<div class="col-2">(\d+)</div>'
+            r'<div class="col-2">(\d+)</div>',
+            re.DOTALL
+        )
+        match = pattern.search(p)
+        results = []
+        if match:
+            top, team1, team2, BY, elim, point = match.groups()
+            print(top, team1, BY, elim, point)
+        print("Hoàn tất trận", match_id, "\n")
         results.append({
             "match_id": match_id,
-            #"rank": top,
-            #"player": player,
-            #"elim": elim,
-            #"point": point
+            "rank": top,
+            "player": team1,
+            "elim": elim,
+            "point": point
         })
     return results
 
