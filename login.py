@@ -168,6 +168,7 @@ def getMacth(driver: WebDriver):
                             "point": match[i]["point"]
                         })
                     for i in sum:
+                        # Chuyển dữ liệu thành file JSON hoặc ném vào DB ở đây!
                         print(i)
         print("Done.")
     return driver
