@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
 import sys
 import pandas as pd
-from login import connectWeb, getInfo, parse_date_time, cookiejar_to_selenium, searchMatch
+from url.process import connectWeb, getInfo, parse_date_time, cookiejar_to_selenium, searchMatch
 def getMacth(driver: WebDriver):
     print("Đang tìm kiếm trận đấu...")
     id, start, end = getInfo()

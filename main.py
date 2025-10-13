@@ -1,5 +1,5 @@
-from login import connectWeb
-from login import getMacth
+from url.process import connectWeb
+from url.process import getMatch
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import sys
 
 def searchMatchs(driver: WebDriver):
-    return getMacth(driver)
+    return getMatch(driver)
 
 def exit(driver: WebDriver):
     print("Thoát.")

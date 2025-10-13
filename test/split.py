@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from login import connectWeb, getInfo, searchMatch
+from url.process import connectWeb, getInfo, searchMatch
 from bs4 import BeautifulSoup
 
 driver = connectWeb()

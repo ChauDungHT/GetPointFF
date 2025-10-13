@@ -13,6 +13,9 @@ import pandas as pd
 import time
 from bs4 import BeautifulSoup
 from selenium.common.exceptions import StaleElementReferenceException
+from url.processJSON import save_to_json
+
+file_name = "data.json"
 
 def parse_date_time(date_time_str):
     date_part, time_part = date_time_str.split(' ')
@@ -117,60 +120,94 @@ def searchMatch(driver: WebDriver, id: int, start: str, end: str):
     # Ở đây có thể thay list tìm kiếm find_elements bằng cách .send_keys(Keys.TAB)
     return driver
 
-def getMacth(driver: WebDriver):
+
+def getMatch(driver: WebDriver, file_name: str = "matches.json"):
+    """
+    Tìm kiếm và lưu thông tin trận đấu
+    
+    Args:
+        driver: WebDriver instance
+        file_name: Tên file để lưu dữ liệu (mặc định: matches.json)
+    
+    Returns:
+        WebDriver: Driver instance sau khi xử lý
+    """
     print("Đang tìm kiếm trận đấu...")
+    
+    # Lấy thông tin và tìm kiếm
     id, start, end = getInfo()
     driver = searchMatch(driver, id, start, end)
+    
+    # Đóng modal nếu có
     try:
         close_btn = WebDriverWait(driver, 3).until(
             EC.element_to_be_clickable((By.XPATH, "//a[@class='close' and @data-dismiss='modal']"))
         )
         close_btn.click()
-    except:
+    except Exception:
         pass
-    spans = WebDriverWait(driver, 3).until(EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@class, 'match__id')]")))
-    # spans trả về danh sách id
+    
+    # Lấy danh sách các trận đấu
+    spans = WebDriverWait(driver, 3).until(
+        EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@class, 'match__id')]"))
+    )
+    
     print(f"Đã tìm thấy {len(spans)} trận đấu.")
+    
     if not spans:
-        print("Không tìm thấy thẻ!")
-    else:
-        for i, _ in enumerate(spans, start=1):
-            if i <= len(spans) and i % 2 == 1:
-                match = matchInfo(driver, str(spans[i-1].text))
-                name = getName(driver, str(spans[i-1].text))
-                sum = []
-                if (len(match) == len(name)):
-                    for i in range(len(match)):
-                        sum.append({
-                            "match_id": match[i]["match_id"],
-                            "rank": match[i]["rank"],
-                            "id": match[i]["id"],
-                            "name": name[i]["name"],
-                            "by": match[i]["by"],
-                            "elim": match[i]["elim"],
-                            "point": match[i]["point"]
-                        })
-                    for i in sum:
-                        print(i)
-            else:  
-                match = matchInfo(driver, str(spans[i-1].text))
-                name = getName(driver, str(spans[i-1].text))
-                sum = []
-                if (len(match) == len(name)):
-                    for i in range(len(match)):
-                        sum.append({
-                            "match_id": match[i]["match_id"],
-                            "rank": match[i]["rank"],
-                            "id": name[i]["name"],
-                            "name": match[i]["id"],
-                            "by": match[i]["by"],
-                            "elim": match[i]["elim"],
-                            "point": match[i]["point"]
-                        })
-                    for i in sum:
-                        # Chuyển dữ liệu thành file JSON hoặc ném vào DB ở đây!
-                        print(i)
-        print("Done.")
+        print("Không tìm thấy trận đấu nào!")
+        return driver
+    
+    # Xử lý từng trận đấu
+    all_matches_data = []
+    
+    for index, span in enumerate(spans, start=1):
+        match_id_text = str(span.text)
+        print(f"Đang xử lý trận {index}/{len(spans)}: {match_id_text}")
+        
+        # Lấy thông tin trận đấu và tên người chơi
+        match = matchInfo(driver, match_id_text)
+        name = getName(driver, match_id_text)
+        
+        # Kiểm tra độ dài dữ liệu
+        if len(match) != len(name):
+            print(f"⚠️  Cảnh báo: Độ dài dữ liệu không khớp cho trận {match_id_text}")
+            print(f"   Match: {len(match)}, Name: {len(name)}")
+            continue
+        
+        # Xử lý dữ liệu dựa trên index (lẻ/chẵn)
+        match_data = []
+        
+        if index % 2 == 1:  # Index lẻ
+            for i in range(len(match)):
+                match_data.append({
+                    "match_id": match[i]["match_id"],
+                    "rank": match[i]["rank"],
+                    "id": match[i]["id"],
+                    "name": name[i]["name"],
+                    "by": match[i]["by"],
+                    "elim": match[i]["elim"],
+                    "point": match[i]["point"]
+                })
+        else:  # Index chẵn (hoán đổi id và name)
+            for i in range(len(match)):
+                match_data.append({
+                    "match_id": match[i]["match_id"],
+                    "rank": match[i]["rank"],
+                    "id": name[i]["name"],  # Hoán đổi
+                    "name": match[i]["id"],  # Hoán đổi
+                    "by": match[i]["by"],
+                    "elim": match[i]["elim"],
+                    "point": match[i]["point"]
+                })
+        
+        all_matches_data.extend(match_data)
+    
+    # Lưu tất cả dữ liệu vào file một lần
+    if all_matches_data:
+        save_to_json(all_matches_data, file_name)
+    
+    print("Done.")
     return driver
 
 def getName(driver: WebDriver, match_id: str):
