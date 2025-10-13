@@ -70,7 +70,7 @@
 - Cần chuyển qua JSON để xử lí
 - Tích hợp vào file chính
 
-[13/10/2025-20:30]:
+[12/10/2025-20:30]:
 1. Đã xong
 - Hoàn thành lấy thông tin trong file split.py và testPlayer.py
 - Cơ bản hoàn thành việc lấy dữ liệu
@@ -78,3 +78,10 @@
 - Cần chuyển qua JSON để xử lí
 - Tích hợp vào file chính
 - Cần tìm kiếm giải pháp xử lí điểm sau khi lấy thông tin về
+
+[13/10/2025-10:30]:
+1. Đã xong
+- Cơ bản giải pháp so sánh điểm đã xong
+2. Cần làm
+- Cần chuyển qua JSON để xử lí
+- Tích hợp vào file chính
