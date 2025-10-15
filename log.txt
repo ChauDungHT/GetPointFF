@@ -92,3 +92,10 @@
 2. Cần làm
 - Tích hợp vào file chính
 - Cần tìm kiếm giải pháp xử lí Team
+
+[14/10/2025-11:30]:
+1. Đã xong
+- Chuyển qua JSON để xử lí đã xong
+- OOP hóa mô hình
+2. Cần làm
+- Hoàn thiện database

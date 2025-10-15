@@ -13,9 +13,9 @@ import pandas as pd
 import time
 from bs4 import BeautifulSoup
 from selenium.common.exceptions import StaleElementReferenceException
-from url.processJSON import save_to_json
+from url.database import save_to_json
 
-file_name = "data.json"
+file_name = r"E:\GetPoint\url\matches.json"
 
 def parse_date_time(date_time_str):
     date_part, time_part = date_time_str.split(' ')
@@ -121,7 +121,7 @@ def searchMatch(driver: WebDriver, id: int, start: str, end: str):
     return driver
 
 
-def getMatch(driver: WebDriver, file_name: str = "matches.json"):
+def getMatch(driver: WebDriver, file_name=file_name):
     """
     Tìm kiếm và lưu thông tin trận đấu
     
@@ -344,7 +344,7 @@ if __name__ == "__main__":
     driver = connectWeb()
     driver.get("https://congdong.ff.garena.vn/tinh-diem")
 
-    driver = getMacth(driver)
+    driver = getMatch(driver)
 
     if(input("Nhập 'e' và Enter để kết thúc\n") == ord('e')):
         driver.quit()
