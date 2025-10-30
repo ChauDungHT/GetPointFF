@@ -65,4 +65,3 @@ class Database:
         except Exception as e:
             print(f"Lỗi khi lưu file {individual_file}: {e}")
 
-    def total_point():

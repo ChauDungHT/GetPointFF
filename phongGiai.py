@@ -64,8 +64,8 @@ class TournamentScoring:
 
     def getInfo(self):
         id = 1240104899
-        start = "29/10/2025 20:00"
-        end = "30/10/2025 00:00"
+        start = "22/10/2025 20:00"
+        end = "22/10/2025 22:23"
         return id, start, end
 
     def connectWeb(self, target_domain=TARGET_DOMAIN, target_url=TARGET_URL):
@@ -173,40 +173,20 @@ class TournamentScoring:
             
             # Lấy thông tin trận đấu và tên người chơi
             match = self.matchInfo(match_id_text)
-            name = self.getName(match_id_text)
-            
-            # Kiểm tra độ dài dữ liệu
-            if len(match) != len(name):
-                print(f"⚠️  Cảnh báo: Độ dài dữ liệu không khớp cho trận {match_id_text}")
-                print(f"   Match: {len(match)}, Name: {len(name)}")
             
             # Xử lý dữ liệu dựa trên index (lẻ/chẵn)
             match_data = []
-            min = len(match) if len(match) < len(name) else len(name)
-            if index % 2 == 1:  # Index lẻ
-                for i in range(min): # Sử dụng min để tránh lỗi index
-                    match_data.append({
-                        "match_id": match[i]["match_id"],
-                        "rank": match[i]["rank"],
-                        "id": match[i]["id"],
-                        "name": name[i]["name"],
-                        "by": match[i]["by"],
-                        "elim": match[i]["elim"],
-                        "point": match[i]["point"]
-                    })
-            else:  # Index chẵn (hoán đổi id và name)
-                for i in range(min): # Sử dụng min để tránh lỗi index
-                    match_data.append({
-                        "match_id": match[i]["match_id"],
-                        "rank": match[i]["rank"],
-                        "id": name[i]["name"],  # Hoán đổi
-                        "name": match[i]["id"],  # Hoán đổi
-                        "by": match[i]["by"],
-                        "elim": match[i]["elim"],
-                        "point": match[i]["point"]
-                    })
-            
+            for i in range(len(match)):
+                match_data.append({
+                    "match_id": match[i]["match_id"],
+                    "rank": match[i]["rank"],
+                    "name": match[i]["name"],
+                    "by": match[i]["by"],
+                    "elim": match[i]["elim"],
+                    "point": match[i]["point"]
+                })
             all_matches_data.extend(match_data)
+            # nên để all_matches_data trong hay ngoài vòng for? 
         
         # Lưu tất cả dữ liệu vào file một lần
         if all_matches_data:
@@ -215,78 +195,6 @@ class TournamentScoring:
         print("Done.")
         return self.driver
 
-    def getName(self, match_id: str):
-        try:
-            # Tìm và click vào match
-            match_link = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, f"//a[text()='{match_id}']"))
-            )
-            match_link.click()
-            time.sleep(0.5)
-            
-            name_click = self.driver.find_element(
-                By.XPATH, 
-                "/html/body/div/section/div/div/div/div/div[2]/div/div/div[2]/div[1]/div/div[2]/a"
-            )
-            name_click.click()
-            time.sleep(0.5)
-            
-            # Đợi cho elements xuất hiện
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_all_elements_located((
-                    By.XPATH, 
-                    "/html/body/div/section/div/div/div/div/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div"
-                ))
-            )
-            
-            # Lấy số lượng elements
-            info = self.driver.find_elements(
-                By.XPATH, 
-                "/html/body/div/section/div/div/div/div/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div"
-            )
-            total_info = len(info)
-            
-            results = []
-            
-            # Lặp qua từng element bằng index để tránh stale element
-            for i in range(total_info):
-                max_retries = 3
-                for attempt in range(max_retries):
-                    try:
-                        el = info[i]
-                        # Lấy outerHTML
-                        p = el.get_attribute('outerHTML')
-                        # Parse với BeautifulSoup
-                        soup = BeautifulSoup(p, "html.parser")
-                        text = soup.get_text(separator="\n", strip=True)
-                        list_data = text.splitlines()
-                        # Kiểm tra độ dài list trước khi lấy dữ liệu
-                        if len(list_data) >= 6:
-                            name = list_data[2]
-                            results.append({
-                                "name": name
-                            })
-                        else:
-                            continue
-                        break  # Thành công thì thoát vòng retry
-                    except StaleElementReferenceException:
-                        if attempt == max_retries - 1:
-                            print(f"Không thể lấy team {i+1} sau {max_retries} lần thử")
-                        else:
-                            print(f"Thử lại lần {attempt + 2} cho team {i+1}")
-                            time.sleep(0.5)
-                    except Exception as e:
-                        print(f"Lỗi tại team {i+1}: {e}")
-                        break
-            
-            return results
-        except Exception as e:
-            print(f"Lỗi chung trong getName: {e}")
-            return []
-
-    def get_nonempty(ld, idx):
-        return ld[idx].strip() if len(ld) > idx and ld[idx].strip() else None
-    
     def matchInfo(self, match_id: str):
         try:
             # Tìm và click vào match
@@ -310,6 +218,7 @@ class TournamentScoring:
             info = self.driver.find_elements(
                 By.XPATH, 
                 "/html/body/div/section/div/div/div/div/div[2]/div/div/div[2]/div[2]/div[1]/div/div/div"
+                
             )
             total_info = len(info)
             print(f"Trận này có {total_info} team.")
@@ -329,34 +238,23 @@ class TournamentScoring:
                         text = soup.get_text(separator="\n", strip=True)
                         list_data = text.splitlines()
                         # Kiểm tra độ dài list trước khi lấy dữ liệu
-                        id_candidate_1 = get_nonempty(list_data, 1)
-                        id_candidate_2 = get_nonempty(list_data, 2)
-
-                        if id_candidate_2:  # list_data[2] tồn tại và không rỗng
-                            ranks = f"Top {attempt + 1}"
-                            id_val = id_candidate_1
-                            by = get_nonempty(list_data, 3)
-                            elim = get_nonempty(list_data, 4)
-                            point = get_nonempty(list_data, 5)
-                        elif id_candidate_1:  # fallback nếu [2] rỗng nhưng [1] có
-                            ranks = f"Top {attempt + 1}"
-                            id_val = id_candidate_2
-                            by = get_nonempty(list_data, 4)
-                            elim = get_nonempty(list_data, 5)
-                            point = get_nonempty(list_data, 6)
-                        else:
-                            # không đủ dữ liệu, bỏ qua hoặc gán mặc định
-                            print(f"Không đủ dữ liệu cho team {i+1}: {list_data}")
-                            continue
+                        if len(list_data) >= 7:
+                            ranks = list_data[0]
+                            name = list_data[1]
+                            by = list_data[4]
+                            elim = list_data[5]
+                            point = list_data[6]
                             
-                        results.append({
-                            "match_id": match_id,
-                            "rank": ranks,
-                            "id": id_val,
-                            "by": by,
-                            "elim": elim,
-                            "point": point
-                        })
+                            results.append({
+                                "match_id": match_id,
+                                "rank": ranks,
+                                "name": name,
+                                "by": by,
+                                "elim": elim,
+                                "point": point
+                            })
+                        else:
+                            continue
                         break  # Thành công thì thoát vòng retry
                     except StaleElementReferenceException:
                         if attempt == max_retries - 1:
@@ -388,9 +286,6 @@ class TournamentScoring:
                 time.sleep(2)
                 self.driver.quit()
                 print("Đã đóng trình duyệt.\n")
-
-def get_nonempty(ld, idx):
-        return ld[idx].strip() if len(ld) > idx and ld[idx].strip() else None
         
 if __name__ == "__main__":
     target_url=TARGET_URL
