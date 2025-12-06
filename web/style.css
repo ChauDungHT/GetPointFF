@@ -1,0 +1,105 @@
+body {
+    /* Thay 'hinhnen.jpg' bằng tên file chính xác của bạn */
+    background-image: url('images/hinh-nen.jpg'); 
+    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Dòng này rất quan trọng: Đảm bảo body cao full màn hình */
+    min-height: 100vh; 
+    
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+        /* Tiêu đề lớn */
+        .main-title {
+            font-family: 'Lilita One', cursive;
+            font-size: 4rem;
+            color: #e0f7fa;
+            text-shadow: 3px 3px 0px #00bcd4, 5px 5px 0px #000;
+            -webkit-text-stroke: 2px #000;
+        }
+
+        /* Header nhỏ ngày giờ */
+        .sub-header {
+            background-color: #00bcd4;
+            color: #000;
+            font-weight: bold;
+            display: inline-block;
+            transform: skew(-20deg); /* Nghiêng khung */
+            padding: 5px 30px;
+            box-shadow: 3px 3px 0 #000;
+        }
+        .sub-header span {
+            display: inline-block;
+            transform: skew(20deg); /* Chỉnh chữ thẳng lại */
+        }
+
+        /* Style cho từng dòng rank */
+        .rank-card {
+            background-color: rgba(12, 36, 46, 0.9); /* Màu nền tối trong suốt */
+            border: 2px solid #00bcd4; /* Viền Cyan */
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            padding: 8px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        .rank-card:hover {
+            transform: scale(1.02);
+            background-color: rgba(12, 36, 46, 1);
+        }
+
+        .rank-number {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+            font-family: 'Lilita One', cursive;
+        }
+
+        .team-header {
+            font-style: italic;
+            font-weight: 900;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #000; /* Màu chữ header cột */
+            text-shadow: 1px 1px 0 #fff; 
+        }
+
+        /* Avatar tròn */
+        .player-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #00bcd4;
+            margin-right: 10px;
+        }
+
+        /* Footer */
+        .footer-box {
+            background-color: rgba(0, 0, 0, 0.85);
+            border: 3px solid #00bcd4;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .footer-title {
+            font-family: 'Lilita One', cursive;
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 2px 2px 0 #00bcd4;
+        }
+
+        .qr-section {
+            background: white;
+            padding: 10px;
+            border-radius: 50%; /* Tạo hình tròn/elip bao quanh QR */
+            border: 3px solid #00bcd4;
+            display: inline-block;
+        }
+        

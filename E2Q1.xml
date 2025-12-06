@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SystemArchitecture>
+    <Layer name="Presentation Layer (Web)">
+    </Layer>
+
+    <Layer name="Business Layer">
+        <Module>User Management Module</Module>
+        <Module>Route Management Module</Module>
+        <Module>Container Management Module</Module>
+        <Module>Incidence Management Module</Module>
+    </Layer>
+
+    <Layer name="Service Layer">
+        <Module>Notifications Module</Module>
+        <Module>Localization Module</Module>
+    </Layer>
+
+    <Layer name="External Services (APIs)">
+        <Service>Google Maps API v3</Service>
+    </Layer>
+
+    <Layer name="Communications Layer">
+        <Interface>Web Services</Interface>
+        <Interface>TCP Socket</Interface>
+    </Layer>
+
+    <Layer name="Persistence Data Layer">
+        <Component>Repositories</Component>
+        <Component>DB Access</Component>
+        <Component>XML Files</Component>
+    </Layer>
+
+    <DataSources>
+        <Source>Data Model</Source>
+        <Source>ERP Legacy System</Source>
+        <Source type="ExternalData">
+            <Format>XML</Format>
+            <Format>Database</Format>
+        </Source>
+    </DataSources>
+
+</SystemArchitecture>

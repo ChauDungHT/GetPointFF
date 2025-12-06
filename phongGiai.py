@@ -64,10 +64,10 @@ class TournamentScoring:
 
     def getInfo(self):
         id = 1240104899
-        start = "22/10/2025 20:00"
-        end = "22/10/2025 22:23"
+        start = "05/12/2025 20:00"
+        end = "06/12/2025 20:00"
         return id, start, end
-
+    
     def connectWeb(self, target_domain=TARGET_DOMAIN, target_url=TARGET_URL):
         # Lấy cookies từ trình duyệt Brave
         try:
@@ -272,11 +272,11 @@ class TournamentScoring:
             print(f"Lỗi chung trong matchInfo: {e}")
             return []
     
-    def run(self):
+    def runner(self):
         try:
-            this = driver.connectWeb()
+            this = self.connectWeb()
             this.get("https://congdong.ff.garena.vn/tinh-diem")
-            req = driver.getMatch()
+            req = self.getMatch()
         except Exception as e:
             print(f"Lỗi: {e}")
             import traceback
@@ -287,8 +287,12 @@ class TournamentScoring:
                 self.driver.quit()
                 print("Đã đóng trình duyệt.\n")
         
-if __name__ == "__main__":
+
+def run():
     target_url=TARGET_URL
     target_domain=TARGET_DOMAIN
     driver = TournamentScoring(target_url, target_domain)
-    driver.run()
+    driver.runner()
+
+if __name__ == "__main__":
+    run()

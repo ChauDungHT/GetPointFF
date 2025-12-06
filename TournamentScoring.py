@@ -63,9 +63,9 @@ class TournamentScoring:
         print("Hoàn tất chuyển cookie.")
 
     def getInfo(self):
-        id = 1240104899
-        start = "29/10/2025 20:00"
-        end = "30/10/2025 00:00"
+        id = input("Nhập ID: ")
+        start = input("Thời gian bắt đầu: ")
+        end = input("Thời gian kết thúc: ")
         return id, start, end
 
     def connectWeb(self, target_domain=TARGET_DOMAIN, target_url=TARGET_URL):
@@ -376,9 +376,9 @@ class TournamentScoring:
     
     def run(self):
         try:
-            this = driver.connectWeb()
+            this = self.connectWeb()
             this.get("https://congdong.ff.garena.vn/tinh-diem")
-            req = driver.getMatch()
+            req = self.getMatch()
         except Exception as e:
             print(f"Lỗi: {e}")
             import traceback
@@ -392,8 +392,11 @@ class TournamentScoring:
 def get_nonempty(ld, idx):
         return ld[idx].strip() if len(ld) > idx and ld[idx].strip() else None
         
-if __name__ == "__main__":
+def run():
     target_url=TARGET_URL
     target_domain=TARGET_DOMAIN
     driver = TournamentScoring(target_url, target_domain)
     driver.run()
+
+if __name__ == "__main__":
+    run()
